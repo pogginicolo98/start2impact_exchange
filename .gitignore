@@ -1,4 +1,4 @@
 # Project exclude paths
 /.idea/
 /venv/
-/exchange/password.py
+/bitcoinExchange/password.py
