@@ -5,7 +5,8 @@ from random import uniform
 
 class Profile(models.Model):
     """
-    ???
+    User profile.
+    Extension of the default 'User' model.
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -21,28 +22,41 @@ class Profile(models.Model):
 
 class Order(models.Model):
     """
-    ???
+    Exchange order.
+    Each user can create sales and purchase orders.
+
+    fields
+    - Type: False=sell, True=buy.
+    - Status: False=inactive, True=active.
+    - Created_at: Date format '31/12/2021, 23:59:59'.
     """
 
+    # Order types
+    CHOICES = (
+        ('B', 'Buy'),
+        ('S', 'Sell')
+    )
+
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='orders')
-    datetime = models.DateTimeField(auto_now_add=True)
     price = models.FloatField()
     quantity = models.FloatField()
-    type = models.BooleanField()
+    type = models.CharField(max_length=20, choices=CHOICES)
     status = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.datetime.strftime("%d/%m/%Y, %H:%M:%S")
+        return self.created_at.strftime("%d/%m/%Y, %H:%M:%S")
 
     class Meta:
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
-        ordering = ['-datetime']
+        ordering = ['-created_at']
 
 
 class Wallet(models.Model):
     """
-    ???
+    User wallet.
+    Each user has only one wallet.
     """
 
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
