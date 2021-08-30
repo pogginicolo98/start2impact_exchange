@@ -27,7 +27,7 @@ class Order(models.Model):
 
     fields
     - Type: False=sell, True=buy.
-    - Status: False=inactive, True=active.
+    - Status: Buy, Sell.
     - Created_at: Date format '31/12/2021, 23:59:59'.
     """
 

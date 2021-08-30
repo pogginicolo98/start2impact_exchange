@@ -10,7 +10,7 @@ class OrderSerializer(serializers.ModelSerializer):
     - Profile
     - Price
     - Quantity
-    - Type: False=sell, True=buy.
+    - Type: Buy, Sell.
     - Created_at: Date format '31/12/2021, 23:59:59'.
     """
 
