@@ -11,13 +11,13 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.user.username
-
     class Meta:
         verbose_name = 'Profile'
         verbose_name_plural = 'Profiles'
         ordering = ['user']
+
+    def __str__(self):
+        return self.user.username
 
 
 class Order(models.Model):
@@ -32,7 +32,7 @@ class Order(models.Model):
     """
 
     # Order types
-    CHOICES = (
+    ORDER_TYPES = (
         ('B', 'Buy'),
         ('S', 'Sell')
     )
@@ -40,17 +40,18 @@ class Order(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='orders')
     price = models.FloatField()
     quantity = models.FloatField()
-    type = models.CharField(max_length=20, choices=CHOICES)
+    type = models.CharField(max_length=20, choices=ORDER_TYPES)
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.created_at.strftime("%d/%m/%Y, %H:%M:%S")
+    executed_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
         ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.profile} - {self.type}'
 
 
 class Wallet(models.Model):
@@ -60,13 +61,35 @@ class Wallet(models.Model):
     """
 
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    dollars = models.FloatField(default=0)
-    bitcoins = models.FloatField(default=uniform(1, 10))
-
-    def __str__(self):
-        return str(self.profile)
+    available_dollar = models.FloatField(default=0)
+    locked_dollar = models.FloatField(default=0)
+    available_bitcoin = models.FloatField(default=uniform(1, 10))
+    locked_bitcoin = models.FloatField(default=0)
 
     class Meta:
         verbose_name = 'Wallet'
         verbose_name_plural = 'Wallets'
         ordering = ['profile']
+
+    def __str__(self):
+        return str(self.profile)
+
+    def lock_dollar(self, amount):
+        self.available_dollar -= amount
+        self.locked_dollar += amount
+        self.save()
+
+    def unlock_dollar(self, amount):
+        self.available_dollar += amount
+        self.locked_dollar -= amount
+        self.save()
+
+    def lock_bitcoin(self, amount):
+        self.available_bitcoin -= amount
+        self.locked_bitcoin += amount
+        self.save()
+
+    def unlock_bitcoin(self, amount):
+        self.available_bitcoin += amount
+        self.locked_bitcoin -= amount
+        self.save()

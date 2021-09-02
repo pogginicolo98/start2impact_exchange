@@ -1,8 +1,12 @@
+from django.shortcuts import get_object_or_404
 from exchange.api.permissions import IsOwnerProfile
-from exchange.api.serializers import OrderSerializer
-from exchange.models import Order
-from rest_framework import mixins, viewsets
+from exchange.api.serializers import LatestOrdersSerializer, OrderSerializer, ProfileSerializer
+from exchange.models import Order, Profile
+from rest_framework import mixins, status, viewsets
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class OrderViewSet(mixins.CreateModelMixin,
@@ -34,7 +38,7 @@ class OrderViewSet(mixins.CreateModelMixin,
         - Retrieve a list with all 'ProfileStatus' instances that correspond to the user passed as parameter in the request.
         """
 
-        queryset = Order.objects.filter(profile=self.request.user.profile, status=True)
+        queryset = Order.objects.filter(profile=self.request.user.profile)
         kwarg_pk = self.kwargs.get('pk', None)
         if kwarg_pk is not None:
             queryset = queryset.filter(pk=kwarg_pk)
@@ -49,3 +53,31 @@ class OrderViewSet(mixins.CreateModelMixin,
 
         user_profile = self.request.user.profile
         serializer.save(profile=user_profile)
+
+
+class LatestOrdersListAPIView(ListAPIView):
+    """
+    ???
+    """
+
+    serializer_class = LatestOrdersSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Order.objects.filter(status=True).exclude(profile=self.request.user.profile)
+        return queryset
+
+
+class ProfileAPIView(APIView):
+    """
+    ??
+    """
+
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        profile = get_object_or_404(Profile, user=request.user)
+        serializer_context = {'request', request}
+        serializer = self.serializer_class(profile, serializer_context)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)

@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'bitcoinExchange.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'engine',
+        'NAME': 'bitcoinExchange',
     }
 }
 
