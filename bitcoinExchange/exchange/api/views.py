@@ -17,11 +17,11 @@ class OrderViewSet(mixins.CreateModelMixin,
     """
     Order ViewSet.
 
-    Actions
-    - Create
-    - Retrieve
-    - List
-    - Delete
+    :actions
+    - create
+    - retrieve
+    - list
+    - delete
 
     * Each action can only be performed by authenticated users.
     * Users can only access their own data.
@@ -32,10 +32,9 @@ class OrderViewSet(mixins.CreateModelMixin,
 
     def get_queryset(self):
         """
-        Override 'get_queryset()' method of GenericAPIView class.
-        Retrieve 2 lists of 'ProfileStatus' instances.
-        - Retrieve a list with all 'ProfileStatus' instances if request has no parameters.
-        - Retrieve a list with all 'ProfileStatus' instances that correspond to the user passed as parameter in the request.
+        Two types of possible queryset:
+        - A list with all user's order instances.
+        - A specific user's order instance.
         """
 
         queryset = Order.objects.filter(profile=self.request.user.profile)
@@ -45,19 +44,19 @@ class OrderViewSet(mixins.CreateModelMixin,
         return queryset
 
     def perform_create(self, serializer):
-        """
-        Override 'perform_create()' method of CreateModelMixin class.
-        Set current session user's 'Profile' as 'user_profile' of the 'ProfileStatus' instance.
-        * Method called when creating a new instance after receiving a POST request.
-        """
-
         user_profile = self.request.user.profile
         serializer.save(profile=user_profile)
 
 
 class LatestOrdersListAPIView(ListAPIView):
     """
-    ???
+    Order ListAPIView.
+    Retrieve a list of all active orders that have not been published by the current user.
+
+    :actions
+    - list
+
+    * Only authenticated users can perform any action.
     """
 
     serializer_class = LatestOrdersSerializer
@@ -70,7 +69,13 @@ class LatestOrdersListAPIView(ListAPIView):
 
 class ProfileAPIView(APIView):
     """
-    ??
+    Profile APIView.
+    Retrieve all profile details and wallet statistics of the current user.
+
+    :actions
+    - retrieve
+
+    * Only authenticated users can perform any action.
     """
 
     serializer_class = ProfileSerializer
@@ -78,6 +83,5 @@ class ProfileAPIView(APIView):
 
     def get(self, request):
         profile = get_object_or_404(Profile, user=request.user)
-        serializer_context = {'request', request}
-        serializer = self.serializer_class(profile, serializer_context)
+        serializer = self.serializer_class(profile)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
