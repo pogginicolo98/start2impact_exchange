@@ -20,13 +20,21 @@ def create_profile(sender, instance, created, **kwargs):
 def create_wallet(sender, instance, created, **kwargs):
     """
     Create a wallet instance associated with the new profile instance created.
+    """
+
+    if created:
+        Wallet.objects.create(profile=instance)
+
+
+@receiver(post_save, sender=Wallet)
+def set_bitcoin_net_balance(sender, instance, created, **kwargs):
+    """
     Save the initial bitcoin amount in the net balance in order to calculate profits.
     """
 
     if created:
-        wallet = Wallet.objects.create(profile=instance)
-        wallet.net_balance_bitcoin = wallet.available_bitcoin
-        wallet.save()
+        instance.bitcoin_net_balance = instance.available_bitcoin
+        instance.save()
 
 
 @receiver(post_save, sender=Order)
@@ -40,11 +48,10 @@ def new_order(sender, instance, created, **kwargs):
         instance_wallet = get_object_or_404(Wallet, profile=instance.profile)
         if instance.type == 'B':
             # Freeze the dollar amount if it is a buy order
-            instance_wallet.freeze_amount(
-                available_currency=instance_wallet.available_dollar,
-                frozen_currency=instance_wallet.frozen_dollar,
-                amount=instance.quantity * instance.price
-            )
+            amount = instance.quantity * instance.price
+            instance_wallet.available_dollar -= amount
+            instance_wallet.frozen_dollar += amount
+            instance_wallet.save()
 
             # Check sell orders to match
             sell_orders = Order.objects.filter(type='S', status=True).exclude(profile=instance.profile)
@@ -56,11 +63,10 @@ def new_order(sender, instance, created, **kwargs):
 
         elif instance.type == 'S':
             # Freeze the bitcoin amount if it is a sell order
-            instance_wallet.freeze_amount(
-                available_currency=instance_wallet.available_bitcoin,
-                frozen_currency=instance_wallet.frozen_bitcoin,
-                amount=instance.quantity
-            )
+            amount = instance.quantity
+            instance_wallet.available_bitcoin -= amount
+            instance_wallet.frozen_bitcoin += amount
+            instance_wallet.save()
 
             # Check buy orders to match
             buy_orders = Order.objects.filter(type='B', status=True).exclude(profile=instance.profile)
@@ -80,16 +86,14 @@ def delete_order(sender, instance, **kwargs):
     instance_wallet = get_object_or_404(Wallet, profile=instance.profile)
     if instance.type == 'B':
         # Unfreeze the dollar amount if it is a buy order
-        instance_wallet.unfreeze_amount(
-            available_currency=instance_wallet.available_dollar,
-            frozen_currency=instance_wallet.frozen_dollar,
-            amount=instance.price * instance.quantity
-        )
+        amount = instance.quantity * instance.price
+        instance_wallet.available_dollar += amount
+        instance_wallet.frozen_dollar -= amount
+        instance_wallet.save()
 
     elif instance.type == 'S':
         # Unfreeze the bitcoin amount if it is a sell order
-        instance_wallet.unfreeze_amount(
-            available_currency=instance_wallet.available_bitcoin,
-            frozen_currency=instance_wallet.frozen_bitcoin,
-            amount=instance.quantity
-        )
+        amount = instance.quantity
+        instance_wallet.available_bitcoin += amount
+        instance_wallet.frozen_bitcoin -= amount
+        instance_wallet.save()

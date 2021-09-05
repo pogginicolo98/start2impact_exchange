@@ -88,7 +88,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     - executed_orders
     - dollar_balance
     - bitcoin_balance
-    - bitcoin_profit: Percentage profits based on bitcoin.
+    - bitcoin_profit_percent: Percentage profits based on bitcoin.
     """
 
     user = serializers.StringRelatedField(read_only=True)
@@ -96,7 +96,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     executed_orders = serializers.SerializerMethodField(read_only=True)
     dollar_balance = serializers.SerializerMethodField(read_only=True)
     bitcoin_balance = serializers.SerializerMethodField(read_only=True)
-    bitcoin_profit = serializers.SerializerMethodField(read_only=True)
+    bitcoin_profit_percent = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Profile
@@ -109,13 +109,16 @@ class ProfileSerializer(serializers.ModelSerializer):
         return instance.orders.filter(status=False).count()
 
     def get_dollar_balance(self, instance):
-        return instance.wallet.available_dollar + instance.wallet.locked_dollar
+        return instance.wallet.available_dollar + instance.wallet.frozen_dollar
 
     def get_bitcoin_balance(self, instance):
-        return instance.wallet.available_bitcoin + instance.wallet.locked_bitcoin
+        return instance.wallet.available_bitcoin + instance.wallet.frozen_bitcoin
 
-    def get_bitcoin_profit(self, instance):
-        net_bitcoin = instance.wallet.net_balance_bitcoin
-        total_bitcoin = instance.wallet.available_bitcoin + instance.wallet.locked_bitcoin
-        delta_percent = ((total_bitcoin - net_bitcoin) / net_bitcoin) * 100
-        return delta_percent
+    def get_bitcoin_profit_percent(self, instance):
+        delta_percent = 0
+        if instance.wallet.bitcoin_net_balance:
+            net_bitcoin = instance.wallet.bitcoin_net_balance
+            total_bitcoin = instance.wallet.available_bitcoin + instance.wallet.frozen_bitcoin
+            delta_percent = ((total_bitcoin - net_bitcoin) / net_bitcoin) * 100
+
+        return round(delta_percent, 2)
