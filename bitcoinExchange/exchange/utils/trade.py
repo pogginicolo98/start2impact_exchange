@@ -4,7 +4,8 @@ from exchange.models import Transaction
 
 def perform_trade(buy_order, buy_order_wallet, sell_order, sell_order_wallet):
     """
-    Performs a simple operation in which both the price and quantity of the two orders are equal.
+    Performs a simple operation in which the field 'quantity' of the two orders are equal and
+    the final price is equal to the buy order price.
 
     :argument
     - buy_order: Must be an 'Order' object.

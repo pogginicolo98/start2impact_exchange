@@ -6,7 +6,7 @@ router = DefaultRouter()
 router.register(r'orders', OrderViewSet, basename='orders')
 
 urlpatterns = [
-    path('profile/', ProfileAPIView.as_view(), name='detail-profile'),
-    path('orders/latest/', LatestOrdersListAPIView.as_view(), name='latest-orders'),
+    path('profile/', ProfileAPIView.as_view(), name='profile-detail'),
+    path('orders/latest/', LatestOrdersListAPIView.as_view(), name='orders-latest'),
     path('', include(router.urls))
 ]

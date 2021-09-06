@@ -14,7 +14,7 @@ class OrderSerializer(serializers.ModelSerializer):
     - type: Buy/Sell.
     - status: False=executed, True=active.
     - created_at: Date format '31/12/2021, 23:59:59'.
-    - executed_at: Datetime format '31/12/2021, 23:59:59'.
+    - executed_at: Date format '31/12/2021, 23:59:59'.
     """
 
     profile = serializers.StringRelatedField(read_only=True)

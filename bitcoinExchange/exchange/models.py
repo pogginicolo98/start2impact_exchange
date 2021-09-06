@@ -20,6 +20,50 @@ class Profile(models.Model):
         return self.user.username
 
 
+class Wallet(models.Model):
+    """
+    Wallet associated with user instance.
+    Each user has only one wallet.
+
+    :fields
+    - bitcoin_net_balance: Bitcoin net balance in order to calculate profits.
+    """
+
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    bitcoin_net_balance = models.FloatField()
+    available_dollar = models.FloatField(default=0)
+    frozen_dollar = models.FloatField(default=0)
+    available_bitcoin = models.FloatField(default=uniform(1, 10))
+    frozen_bitcoin = models.FloatField(default=0)
+
+    class Meta:
+        verbose_name = 'Wallet'
+        verbose_name_plural = 'Wallets'
+        ordering = ['profile']
+
+    def __str__(self):
+        return str(self.profile)
+
+
+class Transaction(models.Model):
+    """
+    Transaction between 2 users.
+    Each transaction consists of 2 compatible orders.
+
+    :fields
+    - executed_at: Datetime format '31/12/2021, 23:59:59'.
+    """
+    executed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Transaction'
+        verbose_name_plural = 'Transactions'
+        ordering = ['-executed_at']
+
+    def __str__(self):
+        return self.executed_at.strftime("%d/%m/%Y, %H:%M:%S")
+
+
 class Order(models.Model):
     """
     Exchange order.
@@ -46,6 +90,7 @@ class Order(models.Model):
     quantity = models.FloatField()
     type = models.CharField(max_length=20, choices=ORDER_TYPES)
     status = models.BooleanField(default=True)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='orders', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -55,49 +100,3 @@ class Order(models.Model):
 
     def __str__(self):
         return self.created_at.strftime("%d/%m/%Y, %H:%M:%S")
-
-
-class Transaction(models.Model):
-    """
-    Transaction between 2 users.
-    Each transaction consists of 2 compatible orders.
-
-    :fields
-    - executed_at: Datetime format '31/12/2021, 23:59:59'.
-    """
-    buy_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='transaction_buy')
-    sell_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='transaction_sell')
-    executed_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'Transaction'
-        verbose_name_plural = 'Transactions'
-        ordering = ['-executed_at']
-
-    def __str__(self):
-        return self.executed_at.strftime("%d/%m/%Y, %H:%M:%S")
-
-
-class Wallet(models.Model):
-    """
-    Wallet associated with user instance.
-    Each user has only one wallet.
-
-    :fields
-    - bitcoin_net_balance: Bitcoin net balance in order to calculate profits.
-    """
-
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    bitcoin_net_balance = models.FloatField()
-    available_dollar = models.FloatField(default=0)
-    frozen_dollar = models.FloatField(default=0)
-    available_bitcoin = models.FloatField(default=uniform(1, 10))
-    frozen_bitcoin = models.FloatField(default=0)
-
-    class Meta:
-        verbose_name = 'Wallet'
-        verbose_name_plural = 'Wallets'
-        ordering = ['profile']
-
-    def __str__(self):
-        return str(self.profile)
