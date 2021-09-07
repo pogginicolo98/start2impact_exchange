@@ -81,11 +81,7 @@ class Order(models.Model):
         ('S', 'Sell')
     )
 
-    profile = models.ForeignKey(
-        Profile,
-        on_delete=models.CASCADE,
-        related_name='orders'
-    )
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='orders')
     price = models.FloatField()
     quantity = models.FloatField()
     type = models.CharField(max_length=20, choices=ORDER_TYPES)
