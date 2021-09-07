@@ -18,9 +18,9 @@ class OrderViewSet(mixins.CreateModelMixin,
     Order ViewSet.
 
     :actions
+    - list
     - create
     - retrieve
-    - list
     - delete
 
     * Each action can only be performed by authenticated users.
