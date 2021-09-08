@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from exchange.api.permissions import IsOwnerProfile
+from exchange.api.permissions import IsActiveOrder, IsOwnerProfile
 from exchange.api.serializers import LatestOrdersSerializer, OrderSerializer, ProfileSerializer
 from exchange.models import Order, Profile
 from rest_framework import mixins, status, viewsets
@@ -28,7 +28,7 @@ class OrderViewSet(mixins.CreateModelMixin,
     """
 
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated, IsOwnerProfile]
+    permission_classes = [IsAuthenticated, IsOwnerProfile, IsActiveOrder]
 
     def get_queryset(self):
         """
