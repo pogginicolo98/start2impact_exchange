@@ -1,5 +1,4 @@
 #!/bin/bash
-# If you use a username other than 'ubuntu' then substitute it where it is used in this file.
 
 NAME="bitcoinExchange"
 DJANGODIR=/home/ubuntu/start2impact_exchange/bitcoinExchange
