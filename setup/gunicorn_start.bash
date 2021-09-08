@@ -1,18 +1,18 @@
 #!/bin/bash
 
-NAME="bitcoinExchange"
-DJANGODIR=/home/ubuntu/start2impact_exchange/bitcoinExchange
-SOCKFILE=/home/ubuntu/start2impact_exchange/venv/run/gunicorn.sock
-USER=ubuntu
-GROUP=ubuntu
+NAME="PROJECT_NAME"
+DJANGODIR=/home/USERNAME/PROJECT_DIR/PROJECT_NAME
+SOCKFILE=/home/USERNAME/PROJECT_DIR/VIRTUAL_ENVIRONMENT/run/gunicorn.sock
+USER=USERNAME
+GROUP=USERNAME
 NUM_WORKERS=3
-DJANGO_SETTINGS_MODULE=bitcoinExchange.settings
-DJANGO_WSGI_MODULE=bitcoinExchange.wsgi
+DJANGO_SETTINGS_MODULE=PROJECT_NAME.settings
+DJANGO_WSGI_MODULE=PROJECT_NAME.wsgi
 echo "Starting $NAME as `whoami`"
 
 
 cd $DJANGODIR
-source /home/ubuntu/start2impact_exchange/venv/bin/activate
+source /home/USERNAME/PROJECT_DIR/VIRTUAL_ENVIRONMENT/bin/activate
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 
