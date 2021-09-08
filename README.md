@@ -54,7 +54,7 @@ $ sudo apt-get install -y mongodb-org
 $ sudo service mongod start
 ```
 
-Check if MongoDB is working properly by running the command ```$ mongo --shell```. The MongoDB shell should start then quit by entering ```quit()```.
+Check if MongoDB is working properly by running the command ```$ mongo --shell```. The MongoDB shell should start then quit by entering ```> quit()```.
 
 #### Configure the virtual environment:
 ```
