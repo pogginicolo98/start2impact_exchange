@@ -73,6 +73,21 @@ start2impact_exchange$ mv setup/password_empty.py bitcoinExchange/password.py
 (venv) start2impact_exchange/bitcoinExchange$ python manage.py test
 ```
 
+#### Setup files:
+Replace ```PROJECT_NAME, PROJECT_DIR, USERNAME, VIRTUAL_ENVIRONMENT, SERVER_IP_ADDRESS``` with the actual names used (user, project, etc...) in the following files:
+- [PROJECT_NAME_nginx.conf](https://github.com/pogginicolo98/start2impact_exchange/blob/master/setup/PROJECT_NAME_nginx.conf)
+- [PROJECT_NAME_supervisor.conf](https://github.com/pogginicolo98/start2impact_exchange/blob/master/setup/PROJECT_NAME_supervisor.conf)
+- [gunicorn_start.bash](https://github.com/pogginicolo98/start2impact_exchange/blob/master/setup/gunicorn_start.bash)
+
+According to the current example you should replace the names as follows:
+```
+PROJECT_NAME=bitcoinExchange
+PROJECT_DIR=start2impact_exchange
+USERNAME=ubuntu
+VIRTUAL_ENVIRONMENT=venv
+SERVER_IP_ADDRESS=13.36.123.111
+```
+
 #### Install and configure Gunicorn:
 ```
 (venv) start2impact_exchange$ pip install gunicorn
@@ -94,7 +109,6 @@ Check if Supervisor is working properly: ```$ sudo supervisorctl status bitcoinE
 #### Install and configure Nginx:
 ```
 $ sudo apt-get install nginx
-start2impact_exchange$ mkdir static-serve
 $ sudo rm /etc/nginx/sites-available/default
 $ sudo rm /etc/nginx/sites-enabled/default
 start2impact_exchange$ sudo mv /setup/bitcoinExchange_nginx.conf /etc/nginx/sites-available/bitcoinExchange.conf
