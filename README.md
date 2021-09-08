@@ -3,14 +3,12 @@ Exchange service to trade BTC/USD.
 The web-app only provides API endpoints with the following features:
 
 #### API endpoints
-1) ```/api/rest-auth/registration/```: User registration via token.
-2) ```/api/rest-auth/login/```: Authentication via token.
-3) ```/api/profile/```: Retrieve profile information and account balance.
-4) ```/api/orders/```: List all your orders or create a new one.
-5) ```/api/orders/order_id/```: Retrieve or delete a specific order, only active orders can be deleted.
-6) ```/api/orders/latest/```: Retrieve all active orders opened by other users.
-
-The web-app also integrates a filter for posts containing the word 'hack', performs a daily report logging the use of endpoints by users and keeps track of the last IP with which users logged in to notify if it is different from the previous one.
+1) ```/api/rest-auth/registration/``` User registration via token.
+2) ```/api/rest-auth/login/``` Authentication via token.
+3) ```/api/profile/``` Retrieve profile information and account balance.
+4) ```/api/orders/``` List all your orders or create a new one.
+5) ```/api/orders/order_id/``` Retrieve or delete a specific order, only active orders can be deleted.
+6) ```/api/orders/latest/``` Retrieve all active orders opened by other users.
 
 #### Live demo: [Bitcoin exchange](http://13.36.123.111/8000)
 
@@ -26,7 +24,7 @@ The web-app also integrates a filter for posts containing the word 'hack', perfo
 - [Djongo 1.3](https://www.djongomapper.com/get-started/) - MongoDB mapper
 
 ## Setup for an Ubuntu 20 server
-For compatibility issues between djongo and django-allauth it is necessary to use djongo 1.3.1.
+For compatibility issues between djongo and django-allauth it is necessary to use ```djongo==1.3.1```.
 
 #### Clone the repository and install some required packages:
 ```
