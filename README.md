@@ -60,7 +60,7 @@ Check if MongoDB is working properly by running the command ```$ mongo --shell``
 ```
 start2impact_exchange$ virtualenv venv -p python3.9
 start2impact_exchange$ source venv/bin/activate
-(venv) start2impact_exchange$ pip install -r requirements.txt
+(venv) start2impact_exchange$ pip install -r setup/requirements.txt
 ```
 
 #### Setup and test django project:
