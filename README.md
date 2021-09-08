@@ -24,7 +24,7 @@ The web-app only provides API endpoints with the following features:
 - [Djongo 1.3](https://www.djongomapper.com/get-started/) - MongoDB mapper
 
 ## Setup for an Ubuntu 20 server
-For compatibility issues between djongo and django-allauth it is necessary to use ```djongo==1.3.1```.
+For compatibility issues between djongo and django-allauth ensure to use ```djongo==1.3.1```.
 
 #### Clone the repository and install some required packages:
 ```
