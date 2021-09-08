@@ -111,7 +111,7 @@ Check if Supervisor is working properly: ```$ sudo supervisorctl status bitcoinE
 $ sudo apt-get install nginx
 $ sudo rm /etc/nginx/sites-available/default
 $ sudo rm /etc/nginx/sites-enabled/default
-start2impact_exchange$ sudo mv /setup/bitcoinExchange_nginx.conf /etc/nginx/sites-available/bitcoinExchange.conf
+start2impact_exchange$ sudo mv setup/bitcoinExchange_nginx.conf /etc/nginx/sites-available/bitcoinExchange.conf
 $ sudo ln -s /etc/nginx/sites-available/bitcoinExchange.conf /etc/nginx/sites-enabled/bitcoinExchange.conf
 (venv) start2impact_exchange/bitcoinExchange$ python manage.py collectstatic
 $ sudo service nginx start
