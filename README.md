@@ -46,6 +46,7 @@ $ sudo apt-get install gnupg
 $ wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
 ```
 
+Then create the list file ```/etc/apt/sources.list.d/mongodb-org-4.4.list``` for your version of Ubuntu (Ubuntu 20 Focal in this case).
 ```
 $ echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
 $ sudo apt-get update
@@ -53,7 +54,7 @@ $ sudo apt-get install -y mongodb-org
 $ sudo service mongod start
 ```
 
-Check if MongoDB is working properly by running the command ```$ mongo --shell```. The MongoDB shell should start then quit by entering ```quit()'''.
+Check if MongoDB is working properly by running the command ```$ mongo --shell```. The MongoDB shell should start then quit by entering ```quit()```.
 
 #### Configure the virtual environment:
 ```
