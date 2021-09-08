@@ -37,7 +37,7 @@ $ sudo apt-get install python3-virtualenv
 ```
 
 #### Install MongoDB:
-```$ start2impact_exchange$ wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -```
+```$ wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -```
 The operation should respond with an ```OK```.
 
 However, if you receive an error indicating that gnupg is not installed, you can:
