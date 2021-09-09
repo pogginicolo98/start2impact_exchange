@@ -5,9 +5,9 @@ The web-app only provides API endpoints with the following features:
 #### API endpoints
 1) ```/api/rest-auth/registration/``` User registration via token.
 2) ```/api/rest-auth/login/``` Authentication via token.
-3) ```/api/profile/``` Retrieve profile information and account balance.
-4) ```/api/orders/``` List all your orders or create a new one.
-5) ```/api/orders/order_id/``` Retrieve or delete a specific order, only active orders can be deleted.
+3) ```/api/profile/``` Retrieve user's profile information and account balance.
+4) ```/api/orders/``` List all user's orders or create a new one.
+5) ```/api/orders/order_id/``` Retrieve or delete a specific user's order, only active orders can be deleted.
 6) ```/api/orders/latest/``` Retrieve all active orders opened by other users.
 
 ## Frameworks and technologies used:
