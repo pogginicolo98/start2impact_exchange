@@ -10,7 +10,7 @@ The web-app only provides API endpoints with the following features:
 5) ```/api/orders/order_id/``` Retrieve or delete a specific user's order, only active orders can be deleted.
 6) ```/api/orders/latest/``` Retrieve all active orders opened by other users.
 
-#### Live demo: [Bitcoin exchange](http://13.36.123.111/api/orders/)
+#### Live demo: [Bitcoin exchange](#) (Temporarily not available)
 
 ## Frameworks and technologies used:
 #### Frameworks
