@@ -3,7 +3,7 @@ bson==0.5.8
 certifi==2021.5.30
 cffi==1.14.6
 charset-normalizer==2.0.4
-cryptography==3.4.8
+cryptography==39.0.1
 dataclasses==0.6
 defusedxml==0.7.1
 Django==2.2.24
